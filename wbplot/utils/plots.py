@@ -198,7 +198,7 @@ def map_params_to_scene(dtype, orientation, hemisphere, flatmap=False):
             width, height = constants.PORTRAIT_SIZE
 
     elif flatmap:
-        scene = 11
+        scene = 13
         width, height = constants.LANDSCAPE_SIZE
 
     else:
