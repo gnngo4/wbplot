@@ -118,7 +118,7 @@ def check_vrange(vrange):
     return tuple(list(vrange))
 
 
-def map_params_to_scene(dtype, orientation, hemisphere):
+def map_params_to_scene(dtype, orientation, hemisphere, flatmap=False):
     """
     Manually map arguments to a scene in a scene file (.scene).
 
@@ -130,6 +130,9 @@ def map_params_to_scene(dtype, orientation, hemisphere):
         the desired image orientation
     hemisphere : 'left' or 'right' or None
         the desired illustrated hemisphere
+    flatmap : bool
+        `flatmap`==True forces plotting of `dscalars` onto scene 11 (Bilateral 
+        Dense flatmaps). Note: All other scene(s) uses ?_very_inflated surfaces
 
     Returns
     -------
@@ -145,53 +148,58 @@ def map_params_to_scene(dtype, orientation, hemisphere):
     ValueError : invalid input argument provided
 
     """
-    if dtype == 'pscalars' and hemisphere is None:
-        scene = 1
-        width, height = constants.BILATERAL_SIZE
+    if not flatmap:
+        if dtype == 'pscalars' and hemisphere is None:
+            scene = 1
+            width, height = constants.BILATERAL_SIZE
 
-    elif (dtype == 'pscalars' and orientation == 'landscape'
-          and hemisphere == 'left'):
-        scene = 2
+        elif (dtype == 'pscalars' and orientation == 'landscape'
+            and hemisphere == 'left'):
+            scene = 2
+            width, height = constants.LANDSCAPE_SIZE
+
+        elif (dtype == 'pscalars' and orientation == 'landscape'
+            and hemisphere == 'right'):
+            scene = 3
+            width, height = constants.LANDSCAPE_SIZE
+
+        elif (dtype == 'pscalars' and orientation == 'portrait'
+            and hemisphere == 'right'):
+            scene = 4
+            width, height = constants.PORTRAIT_SIZE
+
+        elif (dtype == 'pscalars' and orientation == 'portrait'
+            and hemisphere == 'left'):
+            scene = 5
+            width, height = constants.PORTRAIT_SIZE
+
+        elif dtype == 'dscalars' and hemisphere is None:
+            scene = 6
+            width, height = constants.BILATERAL_SIZE
+
+        elif (dtype == 'dscalars' and orientation == 'landscape'
+            and hemisphere == 'left'):
+            scene = 7
+            width, height = constants.LANDSCAPE_SIZE
+
+        elif (dtype == 'dscalars' and orientation == 'landscape'
+            and hemisphere == 'right'):
+            scene = 8
+            width, height = constants.LANDSCAPE_SIZE
+
+        elif (dtype == 'dscalars' and orientation == 'portrait'
+            and hemisphere == 'left'):
+            scene = 9
+            width, height = constants.PORTRAIT_SIZE
+
+        elif (dtype == 'dscalars' and orientation == 'portrait'
+            and hemisphere == 'right'):
+            scene = 10
+            width, height = constants.PORTRAIT_SIZE
+
+    elif flatmap:
+        scene = 11
         width, height = constants.LANDSCAPE_SIZE
-
-    elif (dtype == 'pscalars' and orientation == 'landscape'
-          and hemisphere == 'right'):
-        scene = 3
-        width, height = constants.LANDSCAPE_SIZE
-
-    elif (dtype == 'pscalars' and orientation == 'portrait'
-          and hemisphere == 'right'):
-        scene = 4
-        width, height = constants.PORTRAIT_SIZE
-
-    elif (dtype == 'pscalars' and orientation == 'portrait'
-          and hemisphere == 'left'):
-        scene = 5
-        width, height = constants.PORTRAIT_SIZE
-
-    elif dtype == 'dscalars' and hemisphere is None:
-        scene = 6
-        width, height = constants.BILATERAL_SIZE
-
-    elif (dtype == 'dscalars' and orientation == 'landscape'
-          and hemisphere == 'left'):
-        scene = 7
-        width, height = constants.LANDSCAPE_SIZE
-
-    elif (dtype == 'dscalars' and orientation == 'landscape'
-          and hemisphere == 'right'):
-        scene = 8
-        width, height = constants.LANDSCAPE_SIZE
-
-    elif (dtype == 'dscalars' and orientation == 'portrait'
-          and hemisphere == 'left'):
-        scene = 9
-        width, height = constants.PORTRAIT_SIZE
-
-    elif (dtype == 'dscalars' and orientation == 'portrait'
-          and hemisphere == 'right'):
-        scene = 10
-        width, height = constants.PORTRAIT_SIZE
 
     else:
         raise ValueError("one or more input arguments is invalid")

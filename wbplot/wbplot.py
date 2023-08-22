@@ -99,7 +99,7 @@ def pscalar(file_out, pscalars, orientation='landscape',
 
 def dscalar(file_out, dscalars, orientation='landscape',
             hemisphere=None, palette='magma', transparent=False,
-            palette_params=None):
+            palette_params=None, flatmap=False):
 
     """
     Save an image of dense scalars using Connnectome Workbench.
@@ -123,6 +123,9 @@ def dscalar(file_out, dscalars, orientation='landscape',
         additional (key: value) pairs passed to "wb_command -cifti-palette". for
         more info, see
         https://humanconnectome.org/software/workbench-command/-cifti-palette
+    flatmap : bool
+        `flatmap`==True forces plotting of `dscalars` onto scene 11 (Bilateral 
+        Dense flatmaps). Note: All other scene(s) uses ?_very_inflated surfaces
 
     Returns
     -------
@@ -182,7 +185,7 @@ def dscalar(file_out, dscalars, orientation='landscape',
             "scene file was not successfully copied to {}".format(scene_file))
 
     scene, width, height = plots.map_params_to_scene(
-        dtype='dscalars', orientation=orientation, hemisphere=hemisphere)
+        dtype='dscalars', orientation=orientation, hemisphere=hemisphere, flatmap=flatmap)
 
     cmd = 'wb_command -show-scene "{}" {} "{}" {} {}'.format(
         scene_file, scene, file_out, width, height)
