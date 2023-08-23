@@ -99,7 +99,8 @@ def pscalar(file_out, pscalars, orientation='landscape',
 
 def dscalar(file_out, dscalars, orientation='landscape',
             hemisphere=None, palette='magma', transparent=False,
-            palette_params=None, flatmap=False):
+            palette_params=None, flatmap=False, flatmap_style='plain',
+):
 
     """
     Save an image of dense scalars using Connnectome Workbench.
@@ -126,6 +127,8 @@ def dscalar(file_out, dscalars, orientation='landscape',
     flatmap : bool
         `flatmap`==True forces plotting of `dscalars` onto scene 11 (Bilateral 
         Dense flatmaps). Note: All other scene(s) uses ?_very_inflated surfaces
+    flatmap_style : 'plain' or 'sulc' or 'hcp_border'
+        the desired overlay style
 
     Returns
     -------
@@ -185,7 +188,9 @@ def dscalar(file_out, dscalars, orientation='landscape',
             "scene file was not successfully copied to {}".format(scene_file))
 
     scene, width, height = plots.map_params_to_scene(
-        dtype='dscalars', orientation=orientation, hemisphere=hemisphere, flatmap=flatmap)
+        dtype='dscalars', orientation=orientation, hemisphere=hemisphere, 
+        flatmap=flatmap, flatmap_style=flatmap_style
+    )
 
     cmd = 'wb_command -show-scene "{}" {} "{}" {} {}'.format(
         scene_file, scene, file_out, width, height)

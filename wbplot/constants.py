@@ -1,5 +1,8 @@
 from os.path import join, abspath, dirname
 
+# Constant
+FLATMAP_STYLES = ['plain', 'sulc', 'hcp_border']
+
 # Paths to required files
 PACKAGE_ROOT = dirname(abspath(__file__))
 DATA_DIR = join(PACKAGE_ROOT, "data")

@@ -118,7 +118,10 @@ def check_vrange(vrange):
     return tuple(list(vrange))
 
 
-def map_params_to_scene(dtype, orientation, hemisphere, flatmap=False):
+def map_params_to_scene(
+    dtype, orientation, hemisphere, 
+    flatmap=False, flatmap_style='plain'
+):
     """
     Manually map arguments to a scene in a scene file (.scene).
 
@@ -133,6 +136,8 @@ def map_params_to_scene(dtype, orientation, hemisphere, flatmap=False):
     flatmap : bool
         `flatmap`==True forces plotting of `dscalars` onto scene 11 (Bilateral 
         Dense flatmaps). Note: All other scene(s) uses ?_very_inflated surfaces
+    flatmap_style : 'plain' or 'sulc' or 'hcp_border'
+        the desired overlay style
 
     Returns
     -------
@@ -198,8 +203,14 @@ def map_params_to_scene(dtype, orientation, hemisphere, flatmap=False):
             width, height = constants.PORTRAIT_SIZE
 
     elif flatmap:
-        scene = 13
+        assert flatmap_style in constants.FLATMAP_STYLES, f"{flatmap_style} must one of the following: {constants.FLATMAP_STYLES}"
         width, height = constants.LANDSCAPE_SIZE
+        if flatmap_style == 'hcp_border':
+            scene = 13
+        elif flatmap_style == 'sulc':
+            scene = 12
+        else:
+            scene = 11
 
     else:
         raise ValueError("one or more input arguments is invalid")
